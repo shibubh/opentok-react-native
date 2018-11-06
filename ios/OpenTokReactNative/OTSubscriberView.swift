@@ -22,6 +22,8 @@ class OTSubscriberView: UIView {
   override func layoutSubviews() {
     if let subscriberView = OTRN.sharedState.subscribers[streamId! as String]?.view {
       subscriberView.frame = self.bounds
+      subscriberView.layer.cornerRadius = 8;
+      subscriberView.layer.masksToBounds = true;
       addSubview(subscriberView)
     }
   }

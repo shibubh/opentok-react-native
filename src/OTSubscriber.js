@@ -78,7 +78,7 @@ export default class OTSubscriber extends Component {
       const style = isEmpty(streamProperties) ? this.props.style : (isUndefined(streamProperties.style) || isNull(streamProperties.style)) ? this.props.style : streamProperties.style;
       return <OTSubscriberView key={streamId} streamId={streamId} style={style} />
     });
-    return <View>{ childrenWithStreams }</View>;
+    return (childrenWithStreams);
   }
 }
 
