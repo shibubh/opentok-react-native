@@ -37,6 +37,16 @@ class EventUtils {
         return streamInfo;
     }
     
+    static func prepareJSMinimimStreamEventData(_ stream: OTStream) -> Dictionary<String, Any> {
+        var streamInfo: Dictionary<String, Any> = [:];
+        guard OTRN.sharedState.session != nil else { return streamInfo }
+        streamInfo["streamId"] = stream.streamId;
+        streamInfo["name"] = stream.name;
+        streamInfo["hasAudio"] = stream.hasAudio;
+        streamInfo["hasVideo"] = stream.hasVideo;
+        return streamInfo;
+    }
+    
     static func prepareJSErrorEventData(_ error: OTError) -> Dictionary<String, Any> {
         var errorInfo: Dictionary<String, Any> = [:];
         errorInfo["code"] = error.code;
@@ -44,11 +54,10 @@ class EventUtils {
         return errorInfo;
     }
     
-    static func prepareStreamPropertyChangedEventData(_ changedProperty: String, oldValue: Any, newValue: Any, stream: Dictionary<String, Any>) -> Dictionary<String, Any> {
+    static func prepareStreamPropertyChangedEventData(_ changedProperty: String, oldValue: Any, newValue: Any) -> Dictionary<String, Any> {
         var streamPropertyEventData: Dictionary<String, Any> = [:];
         streamPropertyEventData["oldValue"] = oldValue;
         streamPropertyEventData["newValue"] = newValue;
-        streamPropertyEventData["stream"] = stream;
         streamPropertyEventData["changedProperty"] = changedProperty;
         return streamPropertyEventData
     }
