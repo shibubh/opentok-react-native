@@ -259,9 +259,8 @@ class OTSessionManager: RCTEventEmitter {
     }
     
     func checkAndEmitStreamPropertyChangeEvent(_ streamId: String, changedProperty: String, oldValue: Any, newValue: Any) {
-        guard let stream = OTRN.sharedState.subscriberStreams[streamId] else { return }
-        let streamInfo: Dictionary<String, Any> = EventUtils.prepareJSStreamEventData(stream);
-        let eventData: Dictionary<String, Any> = EventUtils.prepareStreamPropertyChangedEventData(changedProperty, oldValue: oldValue, newValue: newValue, stream: streamInfo);
+        var eventData: Dictionary<String, Any> = EventUtils.prepareStreamPropertyChangedEventData(changedProperty, oldValue: oldValue, newValue: newValue);
+        eventData["streamId"] = streamId;
         self.emitEvent("\(EventUtils.sessionPreface)streamPropertyChanged", data: eventData)
     }
     
@@ -476,7 +475,7 @@ extension OTSessionManager: OTSubscriberKitNetworkStatsDelegate {
     }
     
     func subscriberVideoEnabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
-        let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
+        /*let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
         var subscriberInfo: Dictionary<String, Any> = [:];
         if (streamId.count > 0) {
             subscriberInfo["reason"] = Utils.convertOTSubscriberVideoEventReasonToString(reason);
@@ -486,12 +485,12 @@ extension OTSessionManager: OTSubscriberKitNetworkStatsDelegate {
             }
             subscriberInfo["stream"] = EventUtils.prepareJSStreamEventData(stream);
             self.emitEvent("\(EventUtils.subscriberPreface)subscriberVideoEnabled", data: subscriberInfo);
-        }
+        }*/
         printLogs("OTRN: subscriberVideoEnabled")
     }
     
     func subscriberVideoDisabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
-        let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
+        /*let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
         var subscriberInfo: Dictionary<String, Any> = [:];
         if (streamId.count > 0) {
             subscriberInfo["reason"] = Utils.convertOTSubscriberVideoEventReasonToString(reason);
@@ -501,12 +500,12 @@ extension OTSessionManager: OTSubscriberKitNetworkStatsDelegate {
             }
             subscriberInfo["stream"] = EventUtils.prepareJSStreamEventData(stream);
             self.emitEvent("\(EventUtils.subscriberPreface)subscriberVideoDisabled", data: subscriberInfo);
-        }
+        }*/
         printLogs("OTRN: subscriberVideoDisabled")
     }
     
     func subscriberVideoDisableWarning(_ subscriber: OTSubscriberKit) {
-        let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
+        /*let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
         var subscriberInfo: Dictionary<String, Any> = [:];
         if (streamId.count > 0) {
             guard let stream = OTRN.sharedState.subscriberStreams[streamId] else {
@@ -515,12 +514,12 @@ extension OTSessionManager: OTSubscriberKitNetworkStatsDelegate {
             }
             subscriberInfo["stream"] = EventUtils.prepareJSStreamEventData(stream);
             self.emitEvent("\(EventUtils.subscriberPreface)subscriberVideoDisableWarning", data: subscriberInfo);
-        }
+        }*/
         printLogs("OTRN: subscriberVideoDisableWarning")
     }
     
     func subscriberVideoDisableWarningLifted(_ subscriber: OTSubscriberKit) {
-        let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
+        /*let streamId = Utils.getStreamIdBySubscriber(subscriber as! OTSubscriber);
         var subscriberInfo: Dictionary<String, Any> = [:];
         if (streamId.count > 0) {
             guard let stream = OTRN.sharedState.subscriberStreams[streamId] else {
@@ -529,7 +528,7 @@ extension OTSessionManager: OTSubscriberKitNetworkStatsDelegate {
             }
             subscriberInfo["stream"] = EventUtils.prepareJSStreamEventData(stream);
             self.emitEvent("\(EventUtils.subscriberPreface)subscriberVideoDisableWarningLifted", data: subscriberInfo);
-        }
+        }*/
         printLogs("OTRN: subscriberVideoDisableWarningLifted")
     }
     
