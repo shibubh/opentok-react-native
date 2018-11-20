@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Platform, Text, Image, TouchableOpacity } from 'react-native';
-import PropTypes, { any } from 'prop-types';
+import PropTypes from 'prop-types';
 import { OT, nativeEvents, setNativeEvents, removeNativeEvents } from './OT';
 import OTSubscriberView from './views/OTSubscriberView';
 import { handleError } from './OTError';
@@ -102,7 +102,17 @@ export default class OTSubscriber extends Component {
   }
   render() {
     const disableVideoCollection = this.state.disableVideoCollection;
-    const childrenWithStreams = this.state.streams.map((streamId) => {
+    const { fullScreenView } = this.props;
+    const publisherStream = this.state.streams.filter((stream1) => {
+        const streamPropertie1 = this.props.streamProperties[stream1];
+        return streamPropertie1 && streamPropertie1.streamInformation && streamPropertie1.streamInformation.isProvider
+    });
+    const others = this.state.streams.filter((stream1) => {
+      const streamPropertie1 = this.props.streamProperties[stream1];
+      return streamPropertie1 && streamPropertie1.streamInformation && !streamPropertie1.streamInformation.isProvider
+    });
+    const sortStreams = [...publisherStream, ...others];
+    const childrenWithStreams = sortStreams.map((streamId) => {
       const streamProperties = this.props.streamProperties[streamId];
       const style = isEmpty(streamProperties) ? this.props.style : (isUndefined(streamProperties.style) || isNull(streamProperties.style)) ? this.props.style : streamProperties.style;
       let isVideoDisable = false;
@@ -127,7 +137,9 @@ export default class OTSubscriber extends Component {
           borderRadius: 4,
         };
       }
-      return <TouchableOpacity onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
+      return <TouchableOpacity
+        disabled={fullScreenView}
+        onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
         {isVideoDisable && <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {userProfile && <Image
             style={{ width: 90, height: 90, borderRadius: 45, borderWidth: 2, borderColor: 'white' }}
@@ -155,10 +167,12 @@ OTSubscriber.propTypes = {
   eventHandlers: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   streamProperties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onViewClick: PropTypes.func, // eslint-disable-line react/forbid-prop-types
+  fullScreenView: PropTypes.bool, // eslint-disable-line react/forbid-prop-types
 };
 
 OTSubscriber.defaultProps = {
   properties: {},
   eventHandlers: {},
   streamProperties: {},
+  fullScreenView: false,
 };
