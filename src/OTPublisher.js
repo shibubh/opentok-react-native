@@ -126,9 +126,11 @@ OTPublisher.propTypes = {
   ...viewPropTypes,
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  fitToView: PropTypes.string, // eslint-disable-line react/forbid-prop-types
 };
 OTPublisher.defaultProps = {
   properties: {},
   eventHandlers: {},
+  fitToView: ''
 };
 export default OTPublisher;

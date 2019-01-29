@@ -135,7 +135,7 @@ export default class OTSubscriber extends Component {
           />}
           <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: 20, color: '#ffffff'}}>{userName}</Text></View>
         }
-        <OTSubscriberView key={streamId} streamId={streamId} style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex' }} />
+        <OTSubscriberView key={streamId} streamId={streamId} fitToView={this.props.fitToView} style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex' }} />
       </TouchableOpacity>
     });
     return childrenWithStreams;
@@ -155,10 +155,12 @@ OTSubscriber.propTypes = {
   eventHandlers: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   streamProperties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onViewClick: PropTypes.func, // eslint-disable-line react/forbid-prop-types
+  fitToView: PropTypes.string, // eslint-disable-line react/forbid-prop-types
 };
 
 OTSubscriber.defaultProps = {
   properties: {},
   eventHandlers: {},
   streamProperties: {},
+  fitToView: ''
 };
