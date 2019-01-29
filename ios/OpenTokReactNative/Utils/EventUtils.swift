@@ -29,21 +29,12 @@ class EventUtils {
         streamInfo["streamId"] = stream.streamId;
         streamInfo["name"] = stream.name;
         streamInfo["connectionId"] = stream.connection.connectionId;
+        streamInfo["connection"] = prepareJSConnectionEventData(stream.connection);
         streamInfo["hasAudio"] = stream.hasAudio;
         streamInfo["hasVideo"] = stream.hasVideo;
         streamInfo["creationTime"] = convertDateToString(stream.creationTime);
         streamInfo["height"] = stream.videoDimensions.height;
         streamInfo["width"] = stream.videoDimensions.width;
-        return streamInfo;
-    }
-    
-    static func prepareJSMinimimStreamEventData(_ stream: OTStream) -> Dictionary<String, Any> {
-        var streamInfo: Dictionary<String, Any> = [:];
-        guard OTRN.sharedState.session != nil else { return streamInfo }
-        streamInfo["streamId"] = stream.streamId;
-        streamInfo["name"] = stream.name;
-        streamInfo["hasAudio"] = stream.hasAudio;
-        streamInfo["hasVideo"] = stream.hasVideo;
         return streamInfo;
     }
     
@@ -54,10 +45,11 @@ class EventUtils {
         return errorInfo;
     }
     
-    static func prepareStreamPropertyChangedEventData(_ changedProperty: String, oldValue: Any, newValue: Any) -> Dictionary<String, Any> {
+    static func prepareStreamPropertyChangedEventData(_ changedProperty: String, oldValue: Any, newValue: Any, stream: Dictionary<String, Any>) -> Dictionary<String, Any> {
         var streamPropertyEventData: Dictionary<String, Any> = [:];
         streamPropertyEventData["oldValue"] = oldValue;
         streamPropertyEventData["newValue"] = newValue;
+        streamPropertyEventData["stream"] = stream;
         streamPropertyEventData["changedProperty"] = changedProperty;
         return streamPropertyEventData
     }
