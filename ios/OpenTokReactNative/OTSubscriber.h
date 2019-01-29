@@ -12,6 +12,7 @@
 
 @interface OTSubscriber : RCTView
 @property (nonatomic, assign) NSString *streamId;
+@property (nonatomic, assign) NSString *fitToView;
 @end
 
 #endif /* OTSubscriber_h */
