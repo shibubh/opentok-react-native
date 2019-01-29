@@ -1,59 +1,12 @@
 {
-  "_from": "git+https://github.com/shibubh/opentok-react-native.git",
-  "_id": "opentok-react-native@0.9.0",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/opentok-react-native",
-  "_phantomChildren": {
-    "follow-redirects": "1.5.9",
-    "is-buffer": "1.1.6"
-  },
-  "_requested": {
-    "type": "git",
-    "raw": "opentok-react-native@git+https://github.com/shibubh/opentok-react-native.git",
-    "name": "opentok-react-native",
-    "escapedName": "opentok-react-native",
-    "rawSpec": "git+https://github.com/shibubh/opentok-react-native.git",
-    "saveSpec": "git+https://github.com/shibubh/opentok-react-native.git",
-    "fetchSpec": "https://github.com/shibubh/opentok-react-native.git",
-    "gitCommittish": null
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+https://github.com/shibubh/opentok-react-native.git#e41710671a9908e3ad36ed08928ee6ef93871fce",
-  "_spec": "opentok-react-native@git+https://github.com/shibubh/opentok-react-native.git",
-  "_where": "/Users/bigtincan/bitbucket/snap-md.mobile-src",
-  "author": {
-    "name": "Manik Sachdeva",
-    "email": "msach22gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/opentok/opentok-react-native/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "axios": "^0.18.0",
-    "prop-types": "^15.6.0",
-    "underscore": "^1.8.3",
-    "uuid": "^3.2.1"
-  },
-  "deprecated": false,
+  "name": "opentok-react-native",
+  "version": "0.9.5",
   "description": "React Native components for OpenTok iOS and Android SDKs",
-  "devDependencies": {
-    "babel-jest": "22.1.0",
-    "babel-preset-react-native": "4.0.0",
-    "eslint": "^4.16.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1",
-    "jest": "22.1.4",
-    "react": "16.2.0",
-    "react-native": "^0.51.0",
-    "react-test-renderer": "16.2.0"
+  "main": "src/index.js",
+  "homepage": "www.tokbox.com",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "http://www.tokbox.com",
   "keywords": [
     "opentok",
     "react-native",
@@ -65,15 +18,29 @@
     "video",
     "react"
   ],
+  "author": "Manik Sachdeva <msach22gmail.com>",
   "license": "MIT",
-  "main": "src/index.js",
-  "name": "opentok-react-native",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opentok/opentok-react-native.git"
+    "url": "https://github.com/opentok/opentok-react-native.git"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "axios": "^0.18.0",
+    "prop-types": "^15.6.0",
+    "underscore": "^1.8.3",
+    "uuid": "^3.2.1"
   },
-  "version": "0.9.0"
+  "devDependencies": {
+    "babel-jest": "22.1.0",
+    "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "jest": "22.1.4",
+    "react-test-renderer": "16.2.0",
+    "react": "16.2.0",
+    "react-native": "^0.51.0"
+  }
 }
