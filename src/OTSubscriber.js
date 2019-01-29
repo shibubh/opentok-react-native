@@ -13,6 +13,7 @@ export default class OTSubscriber extends Component {
     this.state = {
       streams: [],
       disableVideoCollection: {},
+      disableAudioCollection: {},
     };
     this.componentEvents = {
       streamDestroyed: Platform.OS === 'android' ? 'session:onStreamDropped' : 'session:streamDestroyed',
@@ -79,13 +80,23 @@ export default class OTSubscriber extends Component {
   streamPropertyChangedHandler = (event) => {
     switch (event.changedProperty) {
       case 'hasVideo':
-        const streamId = event.streamId;
+        const streamId = event.stream.streamId;
         const disableVideoCollection = {
           ...this.state.disableVideoCollection,
           [streamId]: !event.newValue,
         };
         this.setState({
           disableVideoCollection
+        });
+        break;
+      case 'hasAudio':
+        const audioStreamId = event.stream.streamId;
+        const disableAudioCollection = {
+          ...this.state.disableAudioCollection,
+          [audioStreamId]: !event.newValue,
+        };
+        this.setState({
+          disableAudioCollection
         });
         break;
     }
@@ -102,21 +113,33 @@ export default class OTSubscriber extends Component {
   }
   render() {
     const disableVideoCollection = this.state.disableVideoCollection;
+    const disableAudioCollection = this.state.disableAudioCollection;
+    const numberOfStream = this.state.streams.length;
     const childrenWithStreams = this.state.streams.map((streamId) => {
       const streamProperties = this.props.streamProperties[streamId];
+      const isFullScreen = streamProperties ? streamProperties.isFullScreen || false : false;
+      let isProvider = false;
+      let isShareScreen = false;
       const style = isEmpty(streamProperties) ? this.props.style : (isUndefined(streamProperties.style) || isNull(streamProperties.style)) ? this.props.style : streamProperties.style;
       let isVideoDisable = false;
+      let isAudioDisable = false;
       let userName = '';
       let colorName = 'white';
       let userProfile = null;
       isVideoDisable = disableVideoCollection[streamId];
+      isAudioDisable = disableAudioCollection[streamId];
       if (streamProperties && streamProperties.streamInformation) {
         const { name, profilePic } =  streamProperties.streamInformation;
+        isProvider = streamProperties.streamInformation.isProvider;
+        isShareScreen = streamProperties.streamInformation.isScreenShare;
         userName = name;
         userProfile = profilePic;
         colorName = streamProperties.colorName || 'white';
         if (!disableVideoCollection.hasOwnProperty(streamId)) {
           isVideoDisable = !streamProperties.streamInformation.hasVideo;
+        }
+        if (!disableAudioCollection.hasOwnProperty(streamId)) {
+          isAudioDisable = !streamProperties.streamInformation.hasAudio;
         }
       }
       let rootStyle = { ...style };
@@ -127,6 +150,35 @@ export default class OTSubscriber extends Component {
           borderRadius: 4,
         };
       }
+      let muteStyle = {
+        position: 'absolute',
+        right: 4,
+        borderRadius: 16,
+        width: 32,
+        height: 32,
+        backgroundColor: '#000000',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+      };
+      if ((isFullScreen || isProvider) && !this.props.layoutView) {
+        muteStyle = {
+          ...muteStyle,
+          top: (numberOfStream === 1 || isFullScreen) ? 40: 10,
+          right: 16,
+        }
+      } else if(isFullScreen) {
+        muteStyle = {
+          ...muteStyle,
+          top: 40,
+          right: 16,
+        }
+      } else {
+        muteStyle = {
+          ...muteStyle,
+          bottom: 4,
+        }
+      }
       return <TouchableOpacity onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
         {isVideoDisable && <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {userProfile && <Image
@@ -135,7 +187,12 @@ export default class OTSubscriber extends Component {
           />}
           <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: 20, color: '#ffffff'}}>{userName}</Text></View>
         }
-        <OTSubscriberView key={streamId} streamId={streamId} fitToView={this.props.fitToView} style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex' }} />
+        <OTSubscriberView key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
+          style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex'}} />
+        {!isShareScreen && isAudioDisable && this.props.muteElement && <View style={muteStyle}>
+         {this.props.muteElement}
+         </View>
+        }
       </TouchableOpacity>
     });
     return childrenWithStreams;
@@ -155,6 +212,7 @@ OTSubscriber.propTypes = {
   eventHandlers: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   streamProperties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onViewClick: PropTypes.func, // eslint-disable-line react/forbid-prop-types
+  muteElement: PropTypes.element, // eslint-disable-line react/forbid-prop-types
   fitToView: PropTypes.string, // eslint-disable-line react/forbid-prop-types
 };
 
@@ -162,5 +220,6 @@ OTSubscriber.defaultProps = {
   properties: {},
   eventHandlers: {},
   streamProperties: {},
-  fitToView: ''
+  fitToView: '',
+  muteElement: null
 };
