@@ -182,10 +182,10 @@ export default class OTSubscriber extends Component {
       return <TouchableOpacity onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
         {isVideoDisable && <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {userProfile && <Image
-            style={{ width: 90, height: 90, borderRadius: 45, borderWidth: 2, borderColor: 'white' }}
+            style={{ width: this.props.swapView? 40 : 72, height: this.props.swapView? 40 : 72, borderRadius: this.props.swapView? 20 : 36, borderWidth: 2, borderColor: 'white' }}
             source={{ uri: userProfile }}
           />}
-          <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: 20, color: '#ffffff'}}>{userName}</Text></View>
+          {!this.props.swapView && <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: this.props.swapView? 14 : 20, color: '#ffffff'}}>{userName}</Text>}</View>
         }
         <OTSubscriberView key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
           style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex'}} />
@@ -214,6 +214,7 @@ OTSubscriber.propTypes = {
   onViewClick: PropTypes.func, // eslint-disable-line react/forbid-prop-types
   muteElement: PropTypes.element, // eslint-disable-line react/forbid-prop-types
   fitToView: PropTypes.string, // eslint-disable-line react/forbid-prop-types
+  swapView: PropTypes.bool, // eslint-disable-line react/forbid-prop-types
 };
 
 OTSubscriber.defaultProps = {
@@ -221,5 +222,6 @@ OTSubscriber.defaultProps = {
   eventHandlers: {},
   streamProperties: {},
   fitToView: '',
-  muteElement: null
+  muteElement: null,
+  swapView: false,
 };
