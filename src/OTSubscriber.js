@@ -117,7 +117,8 @@ export default class OTSubscriber extends Component {
     const numberOfStream = this.state.streams.length;
     const childrenWithStreams = this.state.streams.map((streamId) => {
       const streamProperties = this.props.streamProperties[streamId];
-      const isFullScreen = streamProperties ? streamProperties.isFullScreen || false : false;
+      const isFullScreen = streamProperties ? streamProperties.isFullScreen : false;
+      const publisherFullScreen = this.props.publisherFullScreen;
       let isProvider = false;
       let isShareScreen = false;
       const style = isEmpty(streamProperties) ? this.props.style : (isUndefined(streamProperties.style) || isNull(streamProperties.style)) ? this.props.style : streamProperties.style;
@@ -146,6 +147,24 @@ export default class OTSubscriber extends Component {
       if (isVideoDisable) {
         rootStyle = {
           ...rootStyle,
+        };
+        if(this.props.swapView) {
+          rootStyle = {
+            ...rootStyle,
+            backgroundColor: colorName,
+            borderRadius: 4,
+          };
+        }
+      }
+      let innerRootStyle = {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
+      if(!this.props.swapView) {
+        innerRootStyle = {
+          ...innerRootStyle,
+          marginHorizontal: 1,
           backgroundColor: colorName,
           borderRadius: 4,
         };
@@ -161,7 +180,8 @@ export default class OTSubscriber extends Component {
         alignItems: 'center',
         display: 'flex',
       };
-      if ((isFullScreen || isProvider) && !this.props.layoutView) {
+      if ((isFullScreen || isProvider) && !this.props.layoutView && !this.props.swapView) {
+        let top = 0;
         muteStyle = {
           ...muteStyle,
           top: (numberOfStream === 1 || isFullScreen) ? 40: 10,
@@ -179,16 +199,30 @@ export default class OTSubscriber extends Component {
           bottom: 4,
         }
       }
+      if(publisherFullScreen) {
+        rootStyle = {
+          ...rootStyle,
+          display: 'none',
+        };
+        isVideoDisable = true;
+      }
+      const isSmallBox = !this.props.layoutView && this.props.swapView;
+      const leftHide = {};
+      if(isVideoDisable) {
+        leftHide.position = 'absolute';
+        leftHide.left = 8000;
+        leftHide.top =  5000;
+      }
       return <TouchableOpacity onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
-        {isVideoDisable && <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {isVideoDisable && <View style={innerRootStyle}>
           {userProfile && <Image
-            style={{ width: this.props.swapView? 40 : 72, height: this.props.swapView? 40 : 72, borderRadius: this.props.swapView? 20 : 36, borderWidth: 2, borderColor: 'white' }}
+            style={{ width: isSmallBox ? 40 : 72, height: isSmallBox ? 40 : 72, borderRadius: isSmallBox ? 20 : 36, borderWidth: 2, borderColor: 'white' }}
             source={{ uri: userProfile }}
           />}
-          {!this.props.swapView && <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: this.props.swapView? 14 : 20, color: '#ffffff'}}>{userName}</Text>}</View>
+          {!this.props.swapView && <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: isSmallBox ? 14 : 20, color: '#ffffff'}}>{userName}</Text>}</View>
         }
-        <OTSubscriberView key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
-          style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex'}} />
+        <OTSubscriberView onTop={!publisherFullScreen} key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
+          style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex', ...leftHide}} />
         {!isShareScreen && isAudioDisable && this.props.muteElement && <View style={muteStyle}>
          {this.props.muteElement}
          </View>

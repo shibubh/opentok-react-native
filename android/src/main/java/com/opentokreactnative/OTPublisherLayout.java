@@ -17,22 +17,25 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OTPublisherLayout extends FrameLayout{
 
     public OTRN sharedState;
+    private String publisherId;
 
     public OTPublisherLayout(ThemedReactContext reactContext) {
 
         super(reactContext);
         sharedState = OTRN.getSharedState();
+        publisherId = "";
     }
 
     public void createPublisherView(String publisherId) {
 
+        this.publisherId = publisherId;
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
         Publisher mPublisher = mPublishers.get(publisherId);        
         mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
                 BaseVideoRenderer.STYLE_VIDEO_FILL);
         FrameLayout mPublisherViewContainer = new FrameLayout(getContext());
         if (mPublisher.getView() instanceof GLSurfaceView) {
-            ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
+            ((GLSurfaceView) mPublisher.getView()).setZOrderMediaOverlay(true);
         }
         ConcurrentHashMap<String, FrameLayout> mPublisherViewContainers = sharedState.getPublisherViewContainers();
         mPublisherViewContainers.put(publisherId, mPublisherViewContainer);
