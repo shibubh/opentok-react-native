@@ -351,8 +351,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                     byte[] byteArray = byteArrayOutputStream .toByteArray();
                     String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    callback.invoke("data:image/png" + ";base64," + encoded);
-                    // callback.invoke(encoded);
+                    callback.invoke(encoded);
                 }
             }
         }
