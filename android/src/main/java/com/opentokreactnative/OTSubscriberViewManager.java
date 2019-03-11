@@ -32,7 +32,7 @@ public class OTSubscriberViewManager extends ViewGroupManager<OTSubscriberLayout
 
     @ReactProp(name = "onTop")
     public void setOnTop(OTSubscriberLayout view, Boolean onTop) {
-        // view.setZOrderMediaOverlay(onTop);
+        // view.setZOrderMediaOverlay(!onTop);
         
     }
 

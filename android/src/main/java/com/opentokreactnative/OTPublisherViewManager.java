@@ -27,7 +27,6 @@ public class OTPublisherViewManager extends ViewGroupManager<OTPublisherLayout> 
 
     @ReactProp(name = "publisherId")
     public void setPublisherId(OTPublisherLayout view, String publisherId) {
-
         view.createPublisherView(publisherId);
     }
 
