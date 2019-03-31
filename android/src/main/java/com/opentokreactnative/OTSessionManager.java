@@ -84,7 +84,9 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
 
         connectCallback = callback;
         Session mSession = sharedState.getSession();
-        mSession.connect(token);
+        if (mSession != null) {
+            mSession.connect(token);
+        }
     }
 
     @ReactMethod
@@ -162,8 +164,13 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
         mSubscriber.setSubscribeToAudio(properties.getBoolean("subscribeToAudio"));
         mSubscriber.setSubscribeToVideo(properties.getBoolean("subscribeToVideo"));
         mSubscribers.put(streamId, mSubscriber);
-        mSession.subscribe(mSubscriber);
-        callback.invoke();
+        if (mSession != null) {
+            callback.invoke();
+            mSession.subscribe(mSubscriber);
+            callback.invoke(null, streamId);
+        } else {
+            callback.invoke("Error subscribring. The native session instance could not be found.");
+        }
 
     }
 
@@ -186,7 +193,9 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
                     mSubscriberViewContainer.removeAllViews();
                 }
                 mSubscriberViewContainers.remove(mStreamId);
-                mSubscriber.destroy();
+                if (mSubscriber != null) {
+                    mSubscriber.destroy();
+                }
                 mSubscribers.remove(mStreamId);
                 mSubscriberStreams.remove(mStreamId);
                 mCallback.invoke();
@@ -211,7 +220,9 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
 
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
         Publisher mPublisher = mPublishers.get(publisherId);
-        mPublisher.setPublishAudio(publishAudio);
+        if (mPublisher != null) {
+            mPublisher.setPublishAudio(publishAudio);
+        }
     }
 
     @ReactMethod
@@ -219,7 +230,9 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
 
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
         Publisher mPublisher = mPublishers.get(publisherId);
-        mPublisher.setPublishVideo(publishVideo);
+        if (mPublisher != null) {
+            mPublisher.setPublishVideo(publishVideo);
+        }
     }
 
     @ReactMethod
@@ -247,7 +260,9 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
 
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
         Publisher mPublisher = mPublishers.get(publisherId);
-        mPublisher.cycleCamera();
+        if (mPublisher != null) {
+            mPublisher.cycleCamera();
+        }
         Log.i(TAG, "Changing camera to " + cameraPosition);
     }
 
@@ -287,8 +302,13 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
     public void sendSignal(ReadableMap signal, Callback callback) {
 
         Session mSession = sharedState.getSession();
-        mSession.sendSignal(signal.getString("type"), signal.getString("data"));
-        callback.invoke();
+        if (mSession != null) {
+            callback.invoke();
+            mSession.sendSignal(signal.getString("type"), signal.getString("data"));
+            callback.invoke();
+        } else {
+            callback.invoke("There was an error sending the signal. The native session instance could not be found.");
+        }
     }
 
     @ReactMethod
@@ -317,6 +337,8 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
                 if (mPublisher != null) {
                     mPublisher.destroy();
                 }
+                mPublishers.remove(publisherId);
+                callback.invoke();
             }
         });
     }
@@ -326,8 +348,14 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
 
         Session mSession = sharedState.getSession();
         WritableMap sessionInfo = EventUtils.prepareJSSessionMap(mSession);
-        sessionInfo.putString("sessionId", mSession.getSessionId());
-        sessionInfo.putInt("connectionStatus", getConnectionStatus());
+        if (mSession != null) {
+            sessionInfo.putInt("connectionStatus", getConnectionStatus());
+            sessionInfo = EventUtils.prepareJSSessionMap(mSession);
+            sessionInfo.putString("sessionId", mSession.getSessionId());
+            sessionInfo.putInt("connectionStatus", getConnectionStatus());
+        }
+        // sessionInfo.putString("sessionId", mSession.getSessionId());
+        // sessionInfo.putInt("connectionStatus", getConnectionStatus());
         callback.invoke(sessionInfo);
     }
 
@@ -344,18 +372,17 @@ public class OTSessionManager extends ReactContextBaseJavaModule implements Sess
             Publisher mPublisher = mPublishers.get(publisherId);
             if (mPublisher != null) {
                 BaseVideoRenderer targetRenderer = mPublisher.getRenderer();
-                AnnotationsVideoRenderer targetView = (AnnotationsVideoRenderer)targetRenderer;
+                AnnotationsVideoRenderer targetView = (AnnotationsVideoRenderer) targetRenderer;
                 if (callback != null && targetView != null) {
                     Bitmap bitmap = targetView.captureScreenshot();
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream .toByteArray();
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
                     String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
                     callback.invoke(encoded);
                 }
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             callback.invoke();
         }
     }

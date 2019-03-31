@@ -28,7 +28,7 @@ public class OTSubscriberLayout extends FrameLayout {
 
     public void createSubscriberView(String streamId) {
         this.streamId = streamId;
-        ConcurrentHashMap<String, Subscriber> mSubscribers = sharedState.getSubscribers();
+        /*ConcurrentHashMap<String, Subscriber> mSubscribers = sharedState.getSubscribers();
         mSubscribers.get(streamId).setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
         FrameLayout mSubscriberViewContainer = new FrameLayout(getContext());
         ConcurrentHashMap<String, FrameLayout> mSubscriberViewContainers = sharedState.getSubscriberViewContainers();
@@ -40,6 +40,23 @@ public class OTSubscriberLayout extends FrameLayout {
         }
         mSubscriberViewContainers.get(streamId).addView(mSubscribers.get(streamId).getView());
         requestLayout();
+*/
+
+        ConcurrentHashMap<String, Subscriber> mSubscribers = sharedState.getSubscribers();
+        Subscriber mSubscriber = mSubscribers.get(streamId);
+        FrameLayout mSubscriberViewContainer = new FrameLayout(getContext());
+        if (mSubscriber != null) {
+            mSubscriber.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
+                BaseVideoRenderer.STYLE_VIDEO_FILL);
+            ConcurrentHashMap<String, FrameLayout> mSubscriberViewContainers = sharedState.getSubscriberViewContainers();
+            mSubscriberViewContainers.put(streamId, mSubscriberViewContainer);
+            addView(mSubscriberViewContainer, 0);
+            if (mSubscriber.getView() instanceof GLSurfaceView) {
+                ((GLSurfaceView) mSubscriber.getView()).setZOrderMediaOverlay(false);
+            }
+            mSubscriberViewContainer.addView(mSubscriber.getView());
+            requestLayout();
+        }
 
     }
 
