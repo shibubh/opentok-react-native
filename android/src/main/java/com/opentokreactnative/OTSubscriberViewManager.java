@@ -26,14 +26,12 @@ public class OTSubscriberViewManager extends ViewGroupManager<OTSubscriberLayout
 
     @ReactProp(name = "streamId")
     public void setStreamId(OTSubscriberLayout view, String streamId) {
-
         view.createSubscriberView(streamId);
     }
 
-    @ReactProp(name = "onTop")
-    public void setOnTop(OTSubscriberLayout view, Boolean onTop) {
-        // view.setZOrderMediaOverlay(!onTop);
-        
+    @ReactProp(name = "swap")
+    public void setSwap(OTSubscriberLayout view, Boolean swap) {
+        view.setZOrderMediaOverlay(swap);
     }
 
 }
