@@ -213,6 +213,7 @@ export default class OTSubscriber extends Component {
         leftHide.left = 8000;
         leftHide.top =  5000;
       }
+      const swap = publisherFullScreen ? false : this.props.swapView;
       return <TouchableOpacity onPress={this.onViewClick.bind(this, streamId)} key={streamId} style={{ ...rootStyle }}>
         {isVideoDisable && <View style={innerRootStyle}>
           {userProfile && <Image
@@ -221,7 +222,7 @@ export default class OTSubscriber extends Component {
           />}
           {!this.props.swapView && <Text style={{marginTop: 5, fontFamily: 'GloberBold', fontSize: isSmallBox ? 14 : 20, color: '#ffffff'}}>{userName}</Text>}</View>
         }
-        <OTSubscriberView onTop={!publisherFullScreen} key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
+        <OTSubscriberView swap={swap} key={streamId} streamId={streamId} fitToView={isShareScreen ? 'fit' : this.props.fitToView}
           style={{ flex: 1, display: isVideoDisable ? 'none' : 'flex', ...leftHide}} />
         {!isShareScreen && isAudioDisable && this.props.muteElement && <View style={muteStyle}>
          {this.props.muteElement}
