@@ -115,7 +115,17 @@ export default class OTSubscriber extends Component {
     const disableVideoCollection = this.state.disableVideoCollection;
     const disableAudioCollection = this.state.disableAudioCollection;
     const numberOfStream = this.state.streams.length;
-    const childrenWithStreams = this.state.streams.map((streamId) => {
+    const sortedStreams = [ ... this.state.streams ];
+    sortedStreams.sort((a, b) => {
+      const aProperties = this.props.streamProperties[a];
+      const isProviderA = aProperties ? aProperties.streamInformation.isProvider === true : false;
+
+      const bProperties = this.props.streamProperties[b];
+      const isProviderB = bProperties ? bProperties.streamInformation.isProvider === true : false;
+
+      return isProviderA === isProviderB ? 0 : (isProviderA ? -1 : 1);
+    });
+    const childrenWithStreams = sortedStreams.map((streamId) => {
       const streamProperties = this.props.streamProperties[streamId];
       const isFullScreen = streamProperties ? streamProperties.isFullScreen : false;
       const publisherFullScreen = this.props.publisherFullScreen;
