@@ -35,6 +35,7 @@ class EventUtils {
         streamInfo["creationTime"] = convertDateToString(stream.creationTime);
         streamInfo["height"] = stream.videoDimensions.height;
         streamInfo["width"] = stream.videoDimensions.width;
+        streamInfo["videoType"] = stream.videoType == OTStreamVideoType.screen ? "screen" : "camera"
         return streamInfo;
     }
     
@@ -87,6 +88,12 @@ class EventUtils {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC");
         return dateFormatter.string(from:creationTime);
+    }
+
+    static func createErrorMessage(_ message: String) -> Dictionary<String, String> {
+        var errorInfo: Dictionary<String, String> = [:]
+        errorInfo["message"] = message
+        return errorInfo
     }
     
 }

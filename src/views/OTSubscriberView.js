@@ -10,8 +10,6 @@ class OTSubscriberView extends Component {
 const viewPropTypes = View.propTypes;
 OTSubscriberView.propTypes = {
   streamId: PropTypes.string.isRequired,
-  fitToView: PropTypes.string.isRequired,
-  swap: PropTypes.bool.isRequired,
   ...viewPropTypes,
 };
 

@@ -12,7 +12,6 @@
 
 @interface OTPublisher : RCTView
 @property (nonatomic, assign) NSString *publisherId;
-@property (nonatomic, assign) NSString *fitToView;
 @end
 #endif /* OTPublisher_h */
 
