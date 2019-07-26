@@ -7,6 +7,7 @@
 | properties | Object | No | Properties passed into the native subscriber instance
 | streamProperties | Object | No | Used to update individual subscriber instance properties
 | eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into the native subscriber instance
+| subscribeToSelf | Boolean | No | If set to true, the subscriber can subscribe to it's own publisher stream (default: false)
 
 ## Properties 
   * **subscribeToAudio** (Boolean) — Whether to subscribe to audio.
@@ -26,6 +27,8 @@ The `OTSubscriber` component will subscribe to a specified stream from a specifi
   * **disconnected** () — Called when the subscriber’s stream has been interrupted.
   
   * **error** (Object) — Sent if the subscriber fails to connect to its stream.
+
+  * **otrnError** (Object) — Sent if there is an error with the communication between the native subscriber instance and the JS component.
 
   * **videoDataReceived** () - Sent when a frame of video has been decoded. Although the subscriber will connect in a relatively short time, video can take more time to synchronize. This message is sent after the `connected` message is sent.
   

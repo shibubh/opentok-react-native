@@ -34,6 +34,11 @@ public final class EventUtils {
             streamInfo.putString("name", stream.getName());
             streamInfo.putBoolean("hasAudio", stream.hasAudio());
             streamInfo.putBoolean("hasVideo", stream.hasVideo());
+            if (stream.getStreamVideoType().equals(Stream.StreamVideoType.StreamVideoTypeScreen)) {
+                streamInfo.putString("videoType", "screen");
+            } else {
+                streamInfo.putString("videoType", "camera");
+            }
         }
         return streamInfo;
     }
@@ -103,5 +108,12 @@ public final class EventUtils {
         videoStats.putInt("videoBytesReceived", stats.videoBytesReceived);
         videoStats.putInt("videoPacketsReceived", stats.videoPacketsReceived);
         return videoStats;
+    }
+
+    public static WritableMap createError(String message) {
+
+        WritableMap errorInfo = Arguments.createMap();
+        errorInfo.putString("message", message);
+        return errorInfo;
     }
 }

@@ -9,8 +9,7 @@ class OTPublisherView extends Component {
 }
 const viewPropTypes = View.propTypes;
 OTPublisherView.propTypes = {
-  publisherId: PropTypes.string.isRequired,
-  fitToView: PropTypes.string.isRequired,
+  publisherId: PropTypes.string.isRequired,  
   ...viewPropTypes,
 };
 

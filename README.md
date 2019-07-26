@@ -31,32 +31,32 @@ React Native library for OpenTok iOS and Android SDKs
 
 1. In your terminal, change into your React Native project's directory
 
-2. In your terminal, run `npm install opentok-react-native`
+2. Add the library using `npm` or `yarn`.
+* `npm install opentok-react-native`
+* `yarn add opentok-react-native`
 
 ### iOS Installation
 
 **Note:** Please make sure to have [CocoaPods](https://cocoapods.org/) on your computer.
 If you've installed this package before, you may need to edit your `Podfile` and project structure because the installation process has changed.
-1. In you terminal, change into your `ios` directory.
+1. In you terminal, change into the `ios` directory of your React Native project.
 
 2. Create a pod file by running: `pod init`.
 
 3. Add the following to your pod file:
 
 ```
-    platform :ios, '9.0'
-
     target '<YourProjectName>' do
 
       # Pods for <YourProject>
-        pod 'OpenTok', '2.15.0'
+        pod 'OpenTok', '2.16.0'
     end
 
 ```
 
 4. Now run, `pod install`
 
-5. After installing the iOS SDK, change into your root directory of your project.
+5. After installing the OpenTok iOS SDK, change into your root directory of your project.
 
 6. Now run, `react-native link opentok-react-native`.
 
@@ -79,12 +79,14 @@ If you've installed this package before, you may need to edit your `Podfile` and
 ```
 
 If you try to archive the app and it fails, please do the following:
- ```
-    Go to Target -> Build Phases and add OpenTokReactNative under Target Dependencies. After that go to the Link Binary With Libraries section and remove the libOpenTokReactNative.a and add it again.
-```
+
+1. Go to Target
+2. Click on Build Phases
+3. Under the Link Binary With Libraries section, remove the libOpenTokReactNative.a and add it again 
+
 ### Android Installation
 
-1. In you terminal, change into your project directory.
+1. In your terminal, change into your project directory.
 
 2. If you have already run `react-native link opentok-react-native` for the iOS installation, please skip this step.
     *  Run `react-native link opentok-react-native`
