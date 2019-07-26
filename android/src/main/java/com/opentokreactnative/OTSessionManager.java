@@ -625,7 +625,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
             }
             sendEventMap(this.getReactApplicationContext(), subscriberPreface +  "onConnected", subscriberInfo);
         }
-        printLogs("onConnected: Subscriber connected. Stream: "+subscriberKit.getStream().getStreamId());
+        printLogs("onConnected: Subscriber connected. Stream: " + streamId);
     }
 
     @Override
@@ -641,7 +641,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
             }
             sendEventMap(this.getReactApplicationContext(), subscriberPreface +  "onDisconnected", subscriberInfo);
         }
-        printLogs("onDisconnected: Subscriber disconnected. Stream: "+subscriberKit.getStream().getStreamId());
+        printLogs("onDisconnected: Subscriber disconnected. Stream: " + streamId);
     }
 
     @Override
@@ -657,7 +657,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
             }
             sendEventMap(this.getReactApplicationContext(), subscriberPreface +  "onReconnected", subscriberInfo);
         }
-        printLogs("onReconnected: Subscriber reconnected. Stream: "+subscriberKit.getStream().getStreamId());
+        printLogs("onReconnected: Subscriber reconnected. Stream: " + streamId);
     }
 
     @Override
