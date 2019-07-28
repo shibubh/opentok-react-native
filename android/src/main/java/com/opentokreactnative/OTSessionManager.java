@@ -21,6 +21,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableArray;
 
+import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.Session;
 import com.opentok.android.Connection;
 import com.opentok.android.Publisher;
@@ -29,9 +30,14 @@ import com.opentok.android.Stream;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
+import com.opentokreactnative.utils.AnnotationsVideoRenderer;
 import com.opentokreactnative.utils.EventUtils;
 import com.opentokreactnative.utils.Utils;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import java.io.ByteArrayOutputStream;
+import android.util.Base64;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -144,6 +150,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
                     .build();
             mPublisher.setPublisherVideoType(PublisherKit.PublisherKitVideoType.PublisherKitVideoTypeScreen);
         } else {
+            AnnotationsVideoRenderer ren = new AnnotationsVideoRenderer(this.getReactApplicationContext());
             mPublisher = new Publisher.Builder(this.getReactApplicationContext())
                     .audioTrack(audioTrack)
                     .videoTrack(videoTrack)
@@ -151,6 +158,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
                     .audioBitrate(audioBitrate)
                     .resolution(Publisher.CameraCaptureResolution.valueOf(resolution))
                     .frameRate(Publisher.CameraCaptureFrameRate.valueOf(frameRate))
+                    .renderer(ren)
                     .build();
             if (cameraPosition.equals("back")) {
                 mPublisher.cycleCamera();
@@ -400,6 +408,30 @@ public class OTSessionManager extends ReactContextBaseJavaModule
     @ReactMethod
     public void enableLogs(Boolean logLevel) {
         setLogLevel(logLevel);
+    }
+
+    @ReactMethod
+    public void captureFrame(String publisherId, Callback callback) {
+        try {
+            OTRN sharedState = OTRN.getSharedState();
+            ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
+            Publisher mPublisher = mPublishers.get(publisherId);
+            if (mPublisher != null) {
+                BaseVideoRenderer targetRenderer = mPublisher.getRenderer();
+                AnnotationsVideoRenderer targetView = (AnnotationsVideoRenderer)targetRenderer;
+                if (callback != null && targetView != null) {
+                    Bitmap bitmap = targetView.captureScreenshot();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream .toByteArray();
+                    String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    callback.invoke(encoded);
+                }
+            }
+        }
+        catch(Exception e) {
+            callback.invoke();
+        }
     }
 
     private void setLogLevel(Boolean logLevel) {
