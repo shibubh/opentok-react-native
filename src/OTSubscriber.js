@@ -67,8 +67,22 @@ export default class OTSubscriber extends Component {
         if (error) {
           this.otrnEventHandler(error);
         } else {
+          var name = stream.name || "";
+          var isProvider = true;
+          if(name.indexOf("Screen Share") >= 0) {
+            isProvider = false;
+          }
+          else if (name.indexOf('default-user.jpg') >= 0) {
+            isProvider = false;
+          }
+          let streams = [];
+          if(isProvider) {
+            streams = [ stream.streamId, ...this.state.streams];
+          } else {
+            streams = [...this.state.streams, stream.streamId];
+          }
           this.setState({
-            streams: [...this.state.streams, stream.streamId],
+            streams,
           });
         }
       });
