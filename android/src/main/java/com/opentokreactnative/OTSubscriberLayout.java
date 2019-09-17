@@ -31,6 +31,7 @@ public class OTSubscriberLayout extends FrameLayout{
         ConcurrentHashMap<String, String> androidZOrderMap = sharedState.getAndroidZOrderMap();
         Subscriber mSubscriber = mSubscribers.get(streamId);
         FrameLayout mSubscriberViewContainer = new FrameLayout(getContext());
+        
         String pubOrSub = "";
         String zOrder = "";
         if (mSubscriber != null) {
