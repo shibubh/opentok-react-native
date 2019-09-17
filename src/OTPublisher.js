@@ -127,6 +127,16 @@ class OTPublisher extends Component {
     }
     return <View />;
   }
+  takeSnap() {
+    return new Promise((resolve) => {
+      const { publisherId } = this.state;
+      OT.captureFrame(publisherId, (data) => {
+        if(data) {
+          resolve(data);
+        }
+      });
+    });
+  }
 }
 const viewPropTypes = View.propTypes;
 OTPublisher.propTypes = {
