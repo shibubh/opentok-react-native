@@ -21,6 +21,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableArray;
 
+import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.Session;
 import com.opentok.android.Connection;
 import com.opentok.android.Publisher;
@@ -33,6 +34,10 @@ import com.opentokreactnative.utils.AnnotationsVideoRenderer;
 import com.opentokreactnative.utils.EventUtils;
 import com.opentokreactnative.utils.Utils;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import java.io.ByteArrayOutputStream;
+import android.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
