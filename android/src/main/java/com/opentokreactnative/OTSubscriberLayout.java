@@ -69,4 +69,19 @@ public class OTSubscriberLayout extends FrameLayout{
         }
     }
 
+    public void updateFitLayout(String streamId, String fitToView) {
+        ConcurrentHashMap<String, Subscriber> mSubscribers = sharedState.getSubscribers();
+        Subscriber mSubscriber = mSubscribers.get(streamId);
+        if (mSubscriber != null) {
+            if(fitToView == "fit") {
+                mSubscriber.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
+                        BaseVideoRenderer.STYLE_VIDEO_FIT);
+            } else {
+                mSubscriber.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
+                        BaseVideoRenderer.STYLE_VIDEO_FILL);
+            }
+            requestLayout();
+        }
+    }
+
 }

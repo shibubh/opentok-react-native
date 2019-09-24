@@ -20,3 +20,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.bin
+*.lock
+*.properties
+*.prefs
+andriod/bin/
+android/bin/

@@ -23,6 +23,8 @@ class OTSubscriberView: UIView {
   override func layoutSubviews() {
     if (fitToView! as String) == "fit" {
         OTRN.sharedState.subscribers[streamId! as String]?.viewScaleBehavior = .fit;
+    } else {
+        OTRN.sharedState.subscribers[streamId! as String]?.viewScaleBehavior = .fill;
     }
     if let subscriberView = OTRN.sharedState.subscribers[streamId! as String]?.view {
       subscriberView.frame = self.bounds

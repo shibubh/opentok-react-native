@@ -12,6 +12,7 @@ import android.util.Log;
 
 public class OTSubscriberViewManager extends ViewGroupManager<OTSubscriberLayout> {
 
+    private String streamId;
     @Override
     public String getName() {
 
@@ -27,7 +28,14 @@ public class OTSubscriberViewManager extends ViewGroupManager<OTSubscriberLayout
     @ReactProp(name = "streamId")
     public void setStreamId(OTSubscriberLayout view, String streamId) {
 
+        this.streamId = streamId;
         view.createSubscriberView(streamId);
+    }
+
+    @ReactProp(name = "fitToView")
+    public void setFitToView(OTSubscriberLayout view, String fitToView) {
+
+        view.updateFitLayout(this.streamId, fitToView);
     }
 
 }
