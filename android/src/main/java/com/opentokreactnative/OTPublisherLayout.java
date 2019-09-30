@@ -58,4 +58,19 @@ public class OTPublisherLayout extends FrameLayout{
 
     }
 
+    public void updateFitLayout(String publisherId, String fitToView) {
+        ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
+        Publisher mPublisher = mPublishers.get(publisherId);
+        if (mPublisher != null) {
+            if(fitToView == "fit") {
+                mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
+                        BaseVideoRenderer.STYLE_VIDEO_FIT);
+            } else {
+                mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
+                        BaseVideoRenderer.STYLE_VIDEO_FILL);
+            }
+            requestLayout();
+        }
+    }
+
 }

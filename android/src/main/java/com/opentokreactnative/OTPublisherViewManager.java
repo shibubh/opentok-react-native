@@ -13,6 +13,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class OTPublisherViewManager extends ViewGroupManager<OTPublisherLayout> {
 
+    private String publisherId;
     @Override
     public String getName() {
 
@@ -27,8 +28,15 @@ public class OTPublisherViewManager extends ViewGroupManager<OTPublisherLayout> 
 
     @ReactProp(name = "publisherId")
     public void setPublisherId(OTPublisherLayout view, String publisherId) {
-
+        this.publisherId = publisherId;
         view.createPublisherView(publisherId);
     }
+
+    @ReactProp(name = "fitToView")
+    public void setFitToView(OTPublisherLayout view, String fitToView) {
+
+        view.updateFitLayout(this.publisherId, fitToView);
+    }
+
 
 }
