@@ -18,6 +18,8 @@ public class OTPublisherLayout extends FrameLayout{
 
     public OTRN sharedState;
 
+    private String publisherId;
+
     public OTPublisherLayout(ThemedReactContext reactContext) {
 
         super(reactContext);
@@ -25,7 +27,7 @@ public class OTPublisherLayout extends FrameLayout{
     }
 
     public void createPublisherView(String publisherId) {
-
+        this.publisherId = publisherId;
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
         ConcurrentHashMap<String, String> androidOnTopMap = sharedState.getAndroidOnTopMap();
         ConcurrentHashMap<String, String> androidZOrderMap = sharedState.getAndroidZOrderMap();
@@ -42,13 +44,7 @@ public class OTPublisherLayout extends FrameLayout{
             mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
                     BaseVideoRenderer.STYLE_VIDEO_FILL);
             FrameLayout mPublisherViewContainer = new FrameLayout(getContext());
-            if (pubOrSub.equals("publisher") && mPublisher.getView() instanceof GLSurfaceView) {
-                if (zOrder.equals("mediaOverlay")) {
-                    ((GLSurfaceView) mPublisher.getView()).setZOrderMediaOverlay(true);
-                } else {
-                    ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
-                }
-            }
+            ((GLSurfaceView) mPublisher.getView()).setZOrderMediaOverlay(false);
             ConcurrentHashMap<String, FrameLayout> mPublisherViewContainers = sharedState.getPublisherViewContainers();
             mPublisherViewContainers.put(publisherId, mPublisherViewContainer);
             addView(mPublisherViewContainer, 0);
@@ -58,9 +54,9 @@ public class OTPublisherLayout extends FrameLayout{
 
     }
 
-    public void updateFitLayout(String publisherId, String fitToView) {
+    public void updateFitLayout(String fitToView) {
         ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
-        Publisher mPublisher = mPublishers.get(publisherId);
+        Publisher mPublisher = mPublishers.get(this.publisherId);
         if (mPublisher != null) {
             if(fitToView == "fit") {
                 mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
@@ -72,5 +68,16 @@ public class OTPublisherLayout extends FrameLayout{
             requestLayout();
         }
     }
+
+    public void setZOrderMediaOverlay(Boolean flag) {
+        ConcurrentHashMap<String, Publisher> mPublishers = sharedState.getPublishers();
+        Publisher mPublisher = mPublishers.get(this.publisherId);
+        if (mPublishers != null && mPublisher.getView() instanceof GLSurfaceView) {
+            ((GLSurfaceView) mPublisher.getView()).setZOrderMediaOverlay(flag);
+        }
+        requestLayout();
+
+    }
+    
 
 }
